@@ -2,25 +2,50 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shopapp/BlocObserver.dart';
+import 'package:shopapp/layout/shop_app/shop_layout.dart';
 import 'package:shopapp/moduls/shop_app/on_boarding/on_boarding_screen.dart';
+import 'package:shopapp/moduls/shop_app_login/login_screen.dart';
+import 'package:shopapp/shared/network/local/cache_helper.dart';
 import 'package:shopapp/shared/network/remote/dio_helper.dart';
 import 'package:shopapp/shared/styles/colors.dart';
 
-void main ()
-{
-  DioHelper.init();
+Future<void> main() async {
+ // bool onBoarding = false;
+  Widget widget;
+
+  //make sure that every method applied then open the application
+ WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  runApp(MyApp());
+
+  DioHelper.init();
+  await CacheHelper.init();
+  bool onBoarding = CacheHelper.getData(key:'onBoarding');
+  String token = CacheHelper.getData(key:'token');
+  if(onBoarding !=null){
+    if(token  !=null) widget = ShopLayout();
+    else widget = LoginScreen();
+
+
+  }
+  else{
+    widget = OnBoardingScreen();
+  }
+  print('onboarding__${onBoarding}');
+  runApp(MyApp(
+    startWidget: widget,
+  ));
 }
 
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
+  final  Widget startWidget;
+  MyApp({this.startWidget});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:OnBoardingScreen(),
-      theme:ThemeData(
+      theme: ThemeData(
         primarySwatch: defaultColor,
         appBarTheme: AppBarTheme(
           color: Colors.white,
@@ -34,11 +59,10 @@ class MyApp extends StatelessWidget{
             color: Colors.black,
           ),
         ),
-        fontFamily:'Jannah',
-
+        fontFamily: 'Jannah',
       ),
+      home:startWidget,
+
     );
   }
-
-
 }

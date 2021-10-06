@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopapp/models/shop_app/categories_model.dart';
 import 'package:shopapp/models/shop_app/home_model.dart';
 import 'package:shopapp/moduls/shop_app/cubit/states.dart';
 import 'package:shopapp/moduls/shop_app_categories/categories_screen.dart';
@@ -50,6 +51,25 @@ class ShopCubit extends Cubit <ShopStates>
 
   }
 
+  CategoriesModel categoriesModel;
+  void getCategories()
+  {
+    DioHelper.getData(
+      url:GET_CATEGORIES,
+      token:token,
+    ).then((value)
+    {
+      categoriesModel = CategoriesModel.fromJson(value.data);
 
+      emit(ShopSuccessCategoriesState());
+
+    }).catchError((error){
+      print(error.toString());
+      emit(ShopErrorCategoriesState());
+
+
+    });
+
+  }
 
 }

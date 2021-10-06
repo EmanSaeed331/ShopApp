@@ -101,6 +101,18 @@ void showToast({
   textColor:Colors.white,
   fontSize:16.0,
 );
+
+Widget myDivider() => Padding(
+  padding: const EdgeInsetsDirectional.only(
+    start: 20.0,
+  ),
+  child: Container(
+    width: double.infinity,
+    height: 1.0,
+    color: Colors.grey[300],
+  ),
+);
+
 enum ToastStates{SUCCESS,ERROR,WARNING}
 Color chooseToastColor(ToastStates state){
   Color color;

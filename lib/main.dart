@@ -25,12 +25,10 @@ Future<void> main() async {
   await CacheHelper.init();
   bool onBoarding = CacheHelper.getData(key:'onBoarding');
   token = CacheHelper.getData(key:'token');
-  print('TOKEEEEN'+token);
+  //print('TOKEEEEN'+token);
   if(onBoarding !=null){
     if(token  !=null) widget = ShopLayout();
     else widget = LoginScreen();
-
-
   }
   else{
     widget = OnBoardingScreen();
@@ -40,18 +38,16 @@ Future<void> main() async {
     startWidget: widget,
   ));
 }
-
 class MyApp extends StatelessWidget {
   final  Widget startWidget;
   MyApp({this.startWidget});
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return MultiBlocProvider(
       providers:[
         BlocProvider(
-            create:( context) => ShopCubit()..getHomeData()..getCategories()..getFavorites(),
+            create:( context) => ShopCubit()..getHomeData()..getCategories()..getFavorites()..getUserData(),
         ),
       ],
       child:BlocConsumer<ShopCubit,ShopStates>(

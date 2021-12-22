@@ -17,7 +17,6 @@ jobs:
         channel: 'stable' # or: 'beta', 'dev' or 'master'
     - run: flutter pub get
     - run: flutter build apk --release
-    - run: flutter build apk --release --build-number=${GITHUB_RUN_NUMBER}
     - name: Create a Release APK
       uses: ncipollo/release-action@v1
       with:
